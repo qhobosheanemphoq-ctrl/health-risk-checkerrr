@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Health Risk Checker</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f2f2f2; }
+    h1 { text-align: center; color: #333; }
+    form { max-width: 700px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    label { display: block; margin-top: 10px; }
+    input, select { width: 100%; padding: 8px; margin-top: 5px; border-radius: 5px; border: 1px solid #ccc; }
+    button { margin-top: 20px; width: 100%; padding: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #45a049; }
+    #result { margin-top: 20px; font-weight: bold; text-align: left; }
+</style>
+</head>
+<body>
+
+<h1>Student Health Risk Checker</h1>
+
+<form id="healthForm">
+
+<!-- General Health -->
+<label for="age">Age:</label>
+<input type="number" id="age" min="5" max="25" required>
+
+<label for="diet">How often do you eat iron-rich foods? (meat, beans, spinach)</label>
+<select id="diet" required>
+<option value="">Select</option>
+<option value="3">Often</option>
+<option value="2">Sometimes</option>
+<option value="1">Rarely</option>
+</select>
+
+<label for="sleep">Hours of sleep per night:</label>
+<input type="number" id="sleep" min="0" max="12" required>
+
+<label for="fatigue">Do you often feel fatigued or tired?</label>
+<select id="fatigue" required>
+<option value="">Select</option>
+<option value="2">Yes</option>
+<option value="0">No</option>
+</select>
+
+<label for="exercise">How often do you exercise per week?</label>
+<select id="exercise" required>
+<option value="">Select</option>
+<option value="3">3+ times</option>
+<option value="2">1-2 times</option>
+<option value="1">Rarely/Never</option>
+</select>
+
+<label for="headache">Do you get frequent headaches or dizziness?</label>
+<select id="headache" required>
+<option value="">Select</option>
+<option value="2">Yes</option>
+<option value="0">No</option>
+</select>
+
+<label for="hydration">Do you drink at least 1.5 liters of water daily?</label>
+<select id="hydration" required>
+<option value="">Select</option>
+<option value="2">No</option>
+<option value="0">Yes</option>
+</select>
+
+<!-- Cancer Risk -->
+<label for="familyCancer">Do you have a family history of cancer?</label>
+<select id="familyCancer" required>
+<option value="">Select</option>
+<option value="2">Yes</option>
+<option value="0">No</option>
+</select>
+
+<label for="persistentSymptoms">Do you have unexplained fatigue, weight loss, or persistent pain/lumps?</label>
+<select id="persistentSymptoms" required>
+<option value="">Select</option>
+<option value="2">Yes</option>
+<option value="0">No</option>
+</select>
+
+<label for="smokingExposure">Are you exposed to smoking or secondhand smoke regularly?</label>
+<select id="smokingExposure" required>
+<option value="">Select</option>
+<option value="2">Yes</option>
+<option value="0">No</option>
+</select>
+
+<!-- Sickle Cell / Blood Health -->
+<label for="familySickle">Do you have a family history of sickle cell disease?</label>
+<select id="familySickle" required>
+<option value="">Select</option>
+<option value="2">Yes</option>
+<option value="0">No</option>
+</select>
+
+<label for="painEpisodes">Do you get frequent joint or abdominal pain?</label>
+<select id="painEpisodes" required>
+<option value="">Select</option>
+<option value="2">Yes</option>
+<option value="0">No</option>
+</select>
+
+<label for="paleness">Do you often feel very pale or tired?</label>
+<select id="paleness" required>
+<option value="">Select</option>
+<option value="2">Yes</option>
+<option value="0">No</option>
+</select>
+
+<!-- Posture / Spine Health -->
+<label for="unevenShoulders">Do your shoulders or hips appear uneven?</label>
+<select id="unevenShoulders" required>
+<option value="">Select</option>
+<option value="2">Yes</option>
+<option value="0">No</option>
+</select>
+
+<label for="leaning">Do you notice yourself leaning to one side frequently?</label>
+<select id="leaning" required>
+<option value="">Select</option>
+<option value="2">Yes</option>
+<option value="0">No</option>
+</select>
+
+<label for="backPain">Do you have persistent back pain?</label>
+<select id="backPain" required>
+<option value="">Select</option>
+<option value="2">Yes</option>
+<option value="0">No</option>
+</select>
+
+<button type="button" onclick="calculateRisk()">Check Risk</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+function calculateRisk() {
+    // General Health
+    const diet = parseInt(document.getElementById('diet').value);
+    const sleep = parseInt(document.getElementById('sleep').value);
+    const fatigue = parseInt(document.getElementById('fatigue').value);
+    const exercise = parseInt(document.getElementById('exercise').value);
+    const headache = parseInt(document.getElementById('headache').value);
+    const hydration = parseInt(document.getElementById('hydration').value);
+
+    // Cancer
+    const familyCancer = parseInt(document.getElementById('familyCancer').value);
+    const persistentSymptoms = parseInt(document.getElementById('persistentSymptoms').value);
+    const smokingExposure = parseInt(document.getElementById('smokingExposure').value);
+
+    // Sickle Cell
+    const familySickle = parseInt(document.getElementById('familySickle').value);
+    const painEpisodes = parseInt(document.getElementById('painEpisodes').value);
+    const paleness = parseInt(document.getElementById('paleness').value);
+
+    // Posture / Spine
+    const unevenShoulders = parseInt(document.getElementById('unevenShoulders').value);
+    const leaning = parseInt(document.getElementById('leaning').value);
+    const backPain = parseInt(document.getElementById('backPain').value);
+
+    // Calculate scores per category
+    const anemiaScore = (diet === 1 ? 2 : 0) + (sleep < 6 ? 1 : 0) + fatigue + headache + hydration;
+    const cancerScore = familyCancer + persistentSymptoms + smokingExposure;
+    const sickleScore = familySickle + painEpisodes + paleness;
+    const postureScore = unevenShoulders + leaning + backPain;
+
+    // Function to get risk level
+    function riskLevel(score) {
+        if (score <= 2) return "Low Risk";
+        else if (score <= 4) return "Moderate Risk";
+        else return "High Risk";
+    }
+
+    // Generate feedback per category
+    function feedback(category, score) {
+        const level = riskLevel(score);
+        let condition = "", advice = "";
+
+        if (category === "Anemia/Dehydration/Fatigue") {
+            if (level === "Low Risk") {
+                condition = "Generally healthy!";
+                advice = "Maintain balanced diet, hydration, sleep, and exercise.";
+            } else if (level === "Moderate Risk") {
+                condition = "May be at risk for anemia, dehydration, or fatigue.";
+                advice = "Increase iron-rich foods, drink more water, get adequate sleep, and exercise regularly.";
+            } else {
+                condition = "High risk for anemia, dehydration, or fatigue.";
+                advice = "Consult a healthcare professional for evaluation.";
+            }
+        }
+
+        if (category === "Cancer") {
+            if (level === "Low Risk") {
+                condition = "Low likelihood of risk factors.";
+                advice = "Maintain healthy lifestyle and regular check-ups.";
+            } else if (level === "Moderate Risk") {
+                condition = "Some risk factors present.";
+                advice = "Be aware of warning signs and consult a doctor if symptoms persist.";
+            } else {
+                condition = "High risk for cancer-related factors.";
+                advice = "Seek evaluation from a healthcare professional.";
+            }
+        }
+
+        if (category === "Sickle Cell/Blood Health") {
+            if (level === "Low Risk") {
+                condition = "No major risk factors.";
+                advice = "Continue healthy habits.";
+            } else if (level === "Moderate Risk") {
+                condition = "Some signs of anemia or sickle cell risk.";
+                advice = "Monitor symptoms and consider talking to a doctor.";
+            } else {
+                condition = "High risk for sickle cell complications.";
+                advice = "Consult a healthcare professional immediately.";
+            }
+        }
+
+        if (category === "Posture/Spine") {
+            if (level === "Low Risk") {
+                condition = "Posture appears normal.";
+                advice = "Maintain good posture and regular exercise.";
+            } else if (level === "Moderate Risk") {
+                condition = "Some signs of postural imbalance.";
+                advice = "Try exercises to improve posture and consult a physiotherapist if needed.";
+            } else {
+                condition = "High risk for scoliosis or spine issues.";
+                advice = "Consult a healthcare professional for assessment.";
+            }
+        }
+
+        return `<p><strong>${category}:</strong> ${level}<br><strong>Likely Condition:</strong> ${condition}<br><strong>Recommended Action:</strong> ${advice}</p>`;
+    }
+
+    // Display results
+    document.getElementById('result').innerHTML = 
+        feedback("Anemia/Dehydration/Fatigue", anemiaScore) +
+        feedback("Cancer", cancerScore) +
+        feedback("Sickle Cell/Blood Health", sickleScore) +
+        feedback("Posture/Spine", postureScore);
+}
+</script>
+
+</body>
+</html>
